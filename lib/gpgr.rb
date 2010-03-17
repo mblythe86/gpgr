@@ -41,7 +41,7 @@ module Gpgr
     # and added to the keyring for the user executing this command.
     #
     def self.import(path_to_key)
-      Gpgr.command + " --yes --import #{File.expand_path(path_to_key)}"
+      system "#{Gpgr.command} --yes --import #{File.expand_path(path_to_key)}"
     end
 
     # Iterates through all of the files at a specified path and attempts to import
@@ -51,6 +51,17 @@ module Gpgr
       Dir.each '/path' do |file|
         Gpgr::Keys.import(file)
       end
+    end
+    
+    # Returns an array with the e-mail addresses of every installed public key
+    # for looping through and detecting if a particular key is installed.
+    #
+    def self.installed_public_keys
+      keys = []
+      `#{Gpgr.command} --list-public-keys --with-colons | grep uid`.split("\n").each do |key| 
+        keys << /\<(.*@.*)\>/.match(key)[1]
+      end
+      keys.uniq
     end
 
   end
