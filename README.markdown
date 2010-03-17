@@ -59,7 +59,15 @@ For **Mac OS X**, you will first need to install <tt>gpg</tt>, you can do
 this through MacPorts or Frink, but the best way is through [MacGPG][2], just
 [download the latest version][3] and install int <tt>.pkg</tt> file it downloads.
 
+##A Note on Testing
 
+Since gpgr really is just firing of to the GPG binary to all of the real work, there is little
+to test within gpgr itself. I've added the tests I feel are prudent and useful. Feel free to
+contribute your own if you think a particular area could do with higher coverage.
+
+I do take the view, however, that GPG it's self is a very well established and proven, mature
+project; and as such - any tests which attempt to test that *gpg* is functioning correctly will
+not be accepted - I'm happy to assume that it is.
 
 ##Status
 
