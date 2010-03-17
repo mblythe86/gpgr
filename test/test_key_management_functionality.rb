@@ -14,12 +14,12 @@ class TestKeyManagementFunctionality < Test::Unit::TestCase
   
   def test_import_keys_method_adds_keys
     setup_for_key_tests
-    assert_equal false, Gpgr::Keys.installed_public_keys.include?('john@example.com')
-    assert_equal false, Gpgr::Keys.installed_public_keys.include?('mark@example.com')
+    assert_equal false, Gpgr::Keys.public_key_installed?('john@example.com')
+    assert_equal false, Gpgr::Keys.public_key_installed?('mark@example.com')
     Gpgr::Keys.import @john_key
     Gpgr::Keys.import @mark_key
-    assert_equal true, Gpgr::Keys.installed_public_keys.include?('john@example.com')
-    assert_equal true, Gpgr::Keys.installed_public_keys.include?('mark@example.com')
+    assert_equal true, Gpgr::Keys.public_key_installed?('john@example.com')
+    assert_equal true, Gpgr::Keys.public_key_installed?('mark@example.com')
     teardown_for_key_tests
   end
 

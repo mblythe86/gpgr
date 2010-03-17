@@ -61,11 +61,18 @@ module Gpgr
     def self.installed_public_keys
       keys = []
       `#{Gpgr.command} --list-public-keys --with-colons | grep uid`.split("\n").each do |key| 
-        keys << /\<(.*@.*)\>/.match(key)[1]
+        keys << /\<(.*@.*)\>/.match(key)[1].upcase
       end
       keys.uniq
     end
-
+    
+    # Simply checks to see if the e-mail address passed through as an argument has a
+    # public key attached to it by checking in installed_public_keys.
+    #
+    def self.public_key_installed?(email)
+      installed_public_keys.include?(email.upcase)
+    end
+    
   end
 
 end
