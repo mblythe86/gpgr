@@ -48,8 +48,10 @@ module Gpgr
     # those which are likely to be GPG / PGP Public Keys.
     # 
     def self.import_keys_at(path)
-      Dir.each '/path' do |file|
-        Gpgr::Keys.import(file)
+      d = Dir.new(path)
+      d.each do |file|
+        puts file.inspect
+        Gpgr::Keys.import(path + '/' + file)
       end
     end
     

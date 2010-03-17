@@ -40,3 +40,9 @@ end
 def remove_installed_key(email)
   system "gpg --delete-key --yes --batch #{email}"
 end
+
+def cleanup_batch_keys
+    remove_installed_key 'testymctest1@example.com'
+    remove_installed_key 'testymctest2@example.com'
+    remove_installed_key 'testymctest3@example.com'
+end
