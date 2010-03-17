@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: Gpgr::Encrypt::GpgFileForEncryption</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">Gpgr::Encrypt::GpgFileForEncryption</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../../files/lib/gpgr_rb.html">
+                lib/gpgr.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                Object
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000010">encrypt</a>&nbsp;&nbsp;
+      <a href="#M000008">encrypt_using</a>&nbsp;&nbsp;
+      <a href="#M000007">new</a>&nbsp;&nbsp;
+      <a href="#M000009">using</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+    <div id="attribute-list">
+      <h3 class="section-bar">Attributes</h3>
+
+      <div class="name-list">
+        <table>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">email_addresses</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">file</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">file_output</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        </table>
+      </div>
+    </div>
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000007" class="method-detail">
+        <a name="M000007"></a>
+
+        <div class="method-heading">
+          <a href="#M000007" class="method-signature">
+          <span class="method-name">new</span><span class="method-args">(path, output_path)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The path to the file which GPG Will be encrypting and the path where you
+want the encrypted file to be output.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000007-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000007-source">
+<pre>
+<span class="ruby-comment cmt"># File lib/gpgr.rb, line 56</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">output_path</span>)
+        <span class="ruby-ivar">@file</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">path</span>)
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">output_path</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">path</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'.pgp'</span>
+          <span class="ruby-ivar">@file_output</span> = <span class="ruby-ivar">@file</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'.pgp'</span>
+        <span class="ruby-keyword kw">else</span>
+          <span class="ruby-ivar">@file_output</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">output_path</span>)
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-ivar">@email_addresses</span> = []
+      <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000010" class="method-detail">
+        <a name="M000010"></a>
+
+        <div class="method-heading">
+          <a href="#M000010" class="method-signature">
+          <span class="method-name">encrypt</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Encrypts the current file for the list of recipients specific (if they are
+valid)
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000010-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000010-source">
+<pre>
+<span class="ruby-comment cmt"># File lib/gpgr.rb, line 82</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">encrypt</span>
+        <span class="ruby-identifier">bad_key</span> = <span class="ruby-ivar">@email_addresses</span>.<span class="ruby-identifier">empty?</span>
+        <span class="ruby-ivar">@email_addresses</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">add</span><span class="ruby-operator">|</span>
+          <span class="ruby-keyword kw">unless</span> <span class="ruby-constant">Gpgr</span><span class="ruby-operator">::</span><span class="ruby-constant">Keys</span>.<span class="ruby-identifier">public_key_installed?</span>(<span class="ruby-identifier">add</span>)
+            <span class="ruby-identifier">bad_key</span> = <span class="ruby-keyword kw">true</span>
+          <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">bad_key</span>
+          <span class="ruby-identifier">raise</span> <span class="ruby-value str">&quot;One or more of the e-mail addresses you supplied don't have valid keys assigned!&quot;</span>
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-identifier">command</span> = <span class="ruby-constant">Gpgr</span>.<span class="ruby-identifier">command</span> <span class="ruby-operator">+</span> <span class="ruby-node">&quot; --yes -a -o #{@file_output} -r &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@email_addresses</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">' -r '</span>) <span class="ruby-operator">+</span> <span class="ruby-node">&quot; -e #{@file}&quot;</span>
+        <span class="ruby-identifier">system</span>(<span class="ruby-identifier">command</span>)
+      <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000008" class="method-detail">
+        <a name="M000008"></a>
+
+        <div class="method-heading">
+          <a href="#M000008" class="method-signature">
+          <span class="method-name">encrypt_using</span><span class="method-args">(email_addresses)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Takes a list of e-mail addresses and then encrypts the file straight away.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000008-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000008-source">
+<pre>
+<span class="ruby-comment cmt"># File lib/gpgr.rb, line 68</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">encrypt_using</span>(<span class="ruby-identifier">email_addresses</span>)
+        <span class="ruby-identifier">using</span>(<span class="ruby-identifier">email_addresses</span>)
+        <span class="ruby-identifier">encrypt</span>
+      <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000009" class="method-detail">
+        <a name="M000009"></a>
+
+        <div class="method-heading">
+          <a href="#M000009" class="method-signature">
+          <span class="method-name">using</span><span class="method-args">(email_addresses)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Expects an array of e-mail addresses for people who this file file should
+be decryptable by.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000009-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000009-source">
+<pre>
+<span class="ruby-comment cmt"># File lib/gpgr.rb, line 76</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">using</span>(<span class="ruby-identifier">email_addresses</span>)
+        <span class="ruby-ivar">@email_addresses</span> = <span class="ruby-identifier">email_addresses</span>
+      <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

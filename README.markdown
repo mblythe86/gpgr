@@ -15,6 +15,18 @@ If you need something that will elegantly and quickly encrypt files for
 you and make managing the keys used within your application for this 
 purpose a snap, use this. If not, use something else.
 
+##Installation
+
+From Rubygems:
+
+	gem install gpgr
+
+From GitHub:
+	
+	Download or Clone the repoistory or just gpgr.rb and include it where
+	you need it.
+
+
 ##Requirements
 
 gpgr has only really been tested on *nix environments, and indeed the path
@@ -71,8 +83,7 @@ not be accepted - I'm happy to assume that it is.
 
 ##Status
 
-Very much a work-in-progress.
-
+Functional if sparsely documented. Gem 0.0.1 has been cut.
 
 [1]: http://www.pccl.co.uk
 [2]: http://macgpg.sourceforge.net/
