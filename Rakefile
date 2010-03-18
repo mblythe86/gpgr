@@ -4,7 +4,7 @@ require 'rake/testtask'
 require "rake/rdoctask"
 require "rake/gempackagetask"  
 
-GPGR_VERSION = "0.0.1" 
+GPGR_VERSION = "0.0.2" 
 
 task :default => [:test]
        
