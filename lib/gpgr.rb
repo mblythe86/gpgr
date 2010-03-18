@@ -89,7 +89,7 @@ module Gpgr
         if bad_key
           raise "One or more of the e-mail addresses you supplied don't have valid keys assigned!"
         end
-        command = Gpgr.command + " --yes -a -o #{@file_output} -r " + @email_addresses.join(' -r ') + " -e #{@file}"
+        command = Gpgr.command + " -q --no-verbose --yes -a -o #{@file_output} -r " + @email_addresses.join(' -r ') + " -e #{@file}"
         system(command)
       end
       
@@ -108,7 +108,7 @@ module Gpgr
     # and added to the keyring for the user executing this command.
     #
     def self.import(path_to_key)
-      system "#{Gpgr.command} --yes --import #{File.expand_path(path_to_key)}"
+      system "#{Gpgr.command} -q --no-verbose --yes --import #{File.expand_path(path_to_key)}"
     end
 
     # Iterates through all of the files at a specified path and attempts to import
@@ -127,9 +127,21 @@ module Gpgr
     #
     def self.installed_public_keys
       keys = []
-      `#{Gpgr.command} --list-public-keys --with-colons | grep uid`.split("\n").each do |key| 
-        keys << /\<(.*@.*)\>/.match(key)[1].upcase
+      email_regexp = /\<(.*@.*)\>/
+
+      # Select the output to grep for, which is different depending on the version
+      # of GPG installed. This is tested on 1.4 and 2.1.
+      #
+      if `#{Gpgr.command} --version | grep GnuPG`.include?('1.')
+        grep_for = 'pub'
+      else
+        grep_for = 'uid'
       end
+
+      `#{Gpgr.command} --list-public-keys --with-colons | grep #{grep_for}`.split("\n").each do |key| 
+        keys << email_regexp.match(key)[1].upcase
+      end
+
       keys.uniq
     end
     

@@ -29,7 +29,7 @@ Passphrase: abc
 %secring #{file_path}.sec
 %commit
   PGP
-  `echo '#{params}' | gpg --batch --gen-key -a`
+  `echo '#{params}' | gpg -q --no-verbose --batch --gen-key -a`
   if File.exists?(file_path + '.pub')
     return file_path + '.pub'
   else
@@ -38,7 +38,7 @@ Passphrase: abc
 end
 
 def remove_installed_key(email)
-  system "gpg --delete-key --yes --batch #{email}"
+  system "gpg -q --no-verbose --delete-key --yes --batch #{email}"
 end
 
 def cleanup_batch_keys
