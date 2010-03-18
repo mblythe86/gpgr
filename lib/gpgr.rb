@@ -135,7 +135,7 @@ module Gpgr
     # 
     def self.import_keys_at(path)
       Dir.new(path).each do |file|
-        puts file.inspect
+        next if ['..','.'].include?(file)
         Gpgr::Keys.import(path + '/' + file)
       end
     end
