@@ -46,6 +46,8 @@ module Gpgr
       GpgFileForEncryption.new(path, default_options[:to])
     end
 
+    class InvalidEmailException < Exception; end
+
     class GpgFileForEncryption
       
       attr_accessor :email_addresses, :file, :file_output
@@ -87,10 +89,11 @@ module Gpgr
           end
         end
         if bad_key
-          raise "One or more of the e-mail addresses you supplied don't have valid keys assigned!"
+          raise InvalidEmailException.new("One or more of the e-mail addresses you supplied don't have valid keys assigned!")
+        else
+          command = Gpgr.command + " -q --no-verbose --yes -a -o #{@file_output} -r " + @email_addresses.join(' -r ') + " -e #{@file}"
+          system(command)
         end
-        command = Gpgr.command + " -q --no-verbose --yes -a -o #{@file_output} -r " + @email_addresses.join(' -r ') + " -e #{@file}"
-        system(command)
       end
       
     end
