@@ -40,10 +40,8 @@ class TestKeyManagementFunctionality < Test::Unit::TestCase
   end
   
   def setup_for_key_tests
-    puts "=>\tGenerating keys for test - please wait"
-    @john_key = generate_key_for('john@example.com','John Test')
-    @mark_key = generate_key_for('mark@example.com','Mark Test')
-    puts "=>\tDone!"
+    @john_key = File.dirname(__FILE__) + '/john_and_marks_keys/john.pub'
+    @mark_key = File.dirname(__FILE__) + '/john_and_marks_keys/mark.pub'
   end
   
   def teardown_for_key_tests

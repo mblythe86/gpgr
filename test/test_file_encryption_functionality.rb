@@ -33,7 +33,7 @@ class TestFileEncryptionFunctionality < Test::Unit::TestCase
     assert_raise Gpgr::Encrypt::InvalidEmailException do
       o.encrypt
     end
-    assert !File.exists(o.file_output)
+    assert !File.exists?(o.file_output)
   end
  
 end
