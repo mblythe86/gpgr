@@ -78,6 +78,14 @@
 
   <div id="contextContent">
 
+    <div id="description">
+      <p>
+Contians the details used to <a
+href="GpgFileForEncryption.html#M000010">encrypt</a> specified
+<tt>file</tt>, is what actually does any encryption.
+</p>
+
+    </div>
 
 
    </div>
@@ -152,7 +160,7 @@ want the encrypted file to be output.
             onclick="toggleCode('M000007-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000007-source">
 <pre>
-<span class="ruby-comment cmt"># File lib/gpgr.rb, line 56</span>
+<span class="ruby-comment cmt"># File lib/gpgr.rb, line 74</span>
       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">path</span>, <span class="ruby-identifier">output_path</span>)
         <span class="ruby-ivar">@file</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">path</span>)
         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">output_path</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">path</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'.pgp'</span>
@@ -187,7 +195,7 @@ valid)
             onclick="toggleCode('M000010-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000010-source">
 <pre>
-<span class="ruby-comment cmt"># File lib/gpgr.rb, line 82</span>
+<span class="ruby-comment cmt"># File lib/gpgr.rb, line 100</span>
       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">encrypt</span>
         <span class="ruby-identifier">bad_key</span> = <span class="ruby-ivar">@email_addresses</span>.<span class="ruby-identifier">empty?</span>
         <span class="ruby-ivar">@email_addresses</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">add</span><span class="ruby-operator">|</span>
@@ -196,10 +204,11 @@ valid)
           <span class="ruby-keyword kw">end</span>
         <span class="ruby-keyword kw">end</span>
         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">bad_key</span>
-          <span class="ruby-identifier">raise</span> <span class="ruby-value str">&quot;One or more of the e-mail addresses you supplied don't have valid keys assigned!&quot;</span>
+          <span class="ruby-identifier">raise</span> <span class="ruby-constant">InvalidEmailException</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">&quot;One or more of the e-mail addresses you supplied don't have valid keys assigned!&quot;</span>)
+        <span class="ruby-keyword kw">else</span>
+          <span class="ruby-identifier">command</span> = <span class="ruby-constant">Gpgr</span>.<span class="ruby-identifier">command</span> <span class="ruby-operator">+</span> <span class="ruby-node">&quot; -q --no-verbose --yes -a -o #{@file_output} -r &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@email_addresses</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">' -r '</span>) <span class="ruby-operator">+</span> <span class="ruby-node">&quot; -e #{@file}&quot;</span>
+          <span class="ruby-identifier">system</span>(<span class="ruby-identifier">command</span>)
         <span class="ruby-keyword kw">end</span>
-        <span class="ruby-identifier">command</span> = <span class="ruby-constant">Gpgr</span>.<span class="ruby-identifier">command</span> <span class="ruby-operator">+</span> <span class="ruby-node">&quot; --yes -a -o #{@file_output} -r &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@email_addresses</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">' -r '</span>) <span class="ruby-operator">+</span> <span class="ruby-node">&quot; -e #{@file}&quot;</span>
-        <span class="ruby-identifier">system</span>(<span class="ruby-identifier">command</span>)
       <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
@@ -223,7 +232,7 @@ Takes a list of e-mail addresses and then encrypts the file straight away.
             onclick="toggleCode('M000008-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000008-source">
 <pre>
-<span class="ruby-comment cmt"># File lib/gpgr.rb, line 68</span>
+<span class="ruby-comment cmt"># File lib/gpgr.rb, line 86</span>
       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">encrypt_using</span>(<span class="ruby-identifier">email_addresses</span>)
         <span class="ruby-identifier">using</span>(<span class="ruby-identifier">email_addresses</span>)
         <span class="ruby-identifier">encrypt</span>
@@ -251,7 +260,7 @@ be decryptable by.
             onclick="toggleCode('M000009-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000009-source">
 <pre>
-<span class="ruby-comment cmt"># File lib/gpgr.rb, line 76</span>
+<span class="ruby-comment cmt"># File lib/gpgr.rb, line 94</span>
       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">using</span>(<span class="ruby-identifier">email_addresses</span>)
         <span class="ruby-ivar">@email_addresses</span> = <span class="ruby-identifier">email_addresses</span>
       <span class="ruby-keyword kw">end</span>

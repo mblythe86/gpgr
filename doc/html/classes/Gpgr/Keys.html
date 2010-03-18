@@ -135,9 +135,9 @@ the user executing this command.
             onclick="toggleCode('M000002-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000002-source">
 <pre>
-<span class="ruby-comment cmt"># File lib/gpgr.rb, line 110</span>
+<span class="ruby-comment cmt"># File lib/gpgr.rb, line 129</span>
     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">import</span>(<span class="ruby-identifier">path_to_key</span>)
-      <span class="ruby-identifier">system</span> <span class="ruby-node">&quot;#{Gpgr.command} --yes --import #{File.expand_path(path_to_key)}&quot;</span>
+      <span class="ruby-identifier">system</span> <span class="ruby-node">&quot;#{Gpgr.command} -q --no-verbose --yes --import #{File.expand_path(path_to_key)}&quot;</span>
     <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
@@ -163,10 +163,9 @@ Public <a href="Keys.html">Keys</a>.
             onclick="toggleCode('M000003-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000003-source">
 <pre>
-<span class="ruby-comment cmt"># File lib/gpgr.rb, line 117</span>
+<span class="ruby-comment cmt"># File lib/gpgr.rb, line 136</span>
     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">import_keys_at</span>(<span class="ruby-identifier">path</span>)
-      <span class="ruby-identifier">d</span> = <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">path</span>)
-      <span class="ruby-identifier">d</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+      <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">path</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
         <span class="ruby-identifier">puts</span> <span class="ruby-identifier">file</span>.<span class="ruby-identifier">inspect</span>
         <span class="ruby-constant">Gpgr</span><span class="ruby-operator">::</span><span class="ruby-constant">Keys</span>.<span class="ruby-identifier">import</span>(<span class="ruby-identifier">path</span> <span class="ruby-operator">+</span> <span class="ruby-value str">'/'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">file</span>)
       <span class="ruby-keyword kw">end</span>
@@ -194,12 +193,24 @@ for looping through and detecting if a particular key is installed.
             onclick="toggleCode('M000004-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000004-source">
 <pre>
-<span class="ruby-comment cmt"># File lib/gpgr.rb, line 128</span>
+<span class="ruby-comment cmt"># File lib/gpgr.rb, line 146</span>
     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">installed_public_keys</span>
       <span class="ruby-identifier">keys</span> = []
-      <span class="ruby-node">`#{Gpgr.command} --list-public-keys --with-colons | grep uid`</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">&quot;\n&quot;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span> 
-        <span class="ruby-identifier">keys</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-regexp re">/\&lt;(.*@.*)\&gt;/</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">key</span>)[<span class="ruby-value">1</span>].<span class="ruby-identifier">upcase</span>
+      <span class="ruby-identifier">email_regexp</span> = <span class="ruby-regexp re">/\&lt;(.*@.*)\&gt;/</span>
+
+      <span class="ruby-comment cmt"># Select the output to grep for, which is different depending on the version</span>
+      <span class="ruby-comment cmt"># of GPG installed. This is tested on 1.4 and 2.1.</span>
+      <span class="ruby-comment cmt">#</span>
+      <span class="ruby-keyword kw">if</span> <span class="ruby-node">`#{Gpgr.command} --version | grep GnuPG`</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">'1.'</span>)
+        <span class="ruby-identifier">grep_for</span> = <span class="ruby-value str">'pub'</span>
+      <span class="ruby-keyword kw">else</span>
+        <span class="ruby-identifier">grep_for</span> = <span class="ruby-value str">'uid'</span>
       <span class="ruby-keyword kw">end</span>
+
+      <span class="ruby-node">`#{Gpgr.command} --list-public-keys --with-colons | grep #{grep_for}`</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">&quot;\n&quot;</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span><span class="ruby-operator">|</span> 
+        <span class="ruby-identifier">keys</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">email_regexp</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">key</span>)[<span class="ruby-value">1</span>].<span class="ruby-identifier">upcase</span>
+      <span class="ruby-keyword kw">end</span>
+
       <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">uniq</span>
     <span class="ruby-keyword kw">end</span>
 </pre>
@@ -226,7 +237,7 @@ href="Keys.html#M000004">installed_public_keys</a>.
             onclick="toggleCode('M000005-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000005-source">
 <pre>
-<span class="ruby-comment cmt"># File lib/gpgr.rb, line 139</span>
+<span class="ruby-comment cmt"># File lib/gpgr.rb, line 169</span>
     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">public_key_installed?</span>(<span class="ruby-identifier">email</span>)
       <span class="ruby-identifier">installed_public_keys</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">email</span>.<span class="ruby-identifier">upcase</span>)
     <span class="ruby-keyword kw">end</span>

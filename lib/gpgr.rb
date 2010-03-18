@@ -13,9 +13,20 @@
 #    
 #    require 'rubygems'
 #    require 'gpgr'
+#
+#    # Synopsis
+#    #
 #    list_of_keys = [ 'foo@example.com', 'bar@example.com' ]
 #    Gpgr::Encrypt.file('/some_file.txt', :to => '/encrypted.gpg').encrypt_using(list_of_keys)
-#    
+#
+#    # To import all the public keys in a given directory
+#    #
+#    Gpgr::Keys.import_keys_at('/path/to/public/keys')
+#   
+#    #  Will encrypt for every single person you have a public key for
+#    #
+#    Gpgr::Encrypt.file('/some_file.txt', :to => '/encrypted.gpg').encrypt_using(Gpgr::Keys.installed_public_keys)
+#
 module Gpgr
 
   # Returns the command to execute to run GPG. It is defualted to /use/bin/env gpg 
@@ -45,9 +56,14 @@ module Gpgr
       default_options = { :to => "#{path}.pgp" }.merge(options)
       GpgFileForEncryption.new(path, default_options[:to])
     end
-
+  
+    # Raised if there is an invalid e-mail address provided to encrypt with
+    #
     class InvalidEmailException < Exception; end
 
+    # Contians the details used to encrypt specified +file+, is what actually does
+    # any encryption.
+    # 
     class GpgFileForEncryption
       
       attr_accessor :email_addresses, :file, :file_output
@@ -118,8 +134,7 @@ module Gpgr
     # those which are likely to be GPG / PGP Public Keys.
     # 
     def self.import_keys_at(path)
-      d = Dir.new(path)
-      d.each do |file|
+      Dir.new(path).each do |file|
         puts file.inspect
         Gpgr::Keys.import(path + '/' + file)
       end
