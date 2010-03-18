@@ -22,7 +22,7 @@ Rake::RDocTask.new do |rdoc|
                            "COPYING",
                            "LICENSE", 
                            "HACKING", "lib/" )
-  rdoc.main     = "README"
+  rdoc.main     = "lib/gpgr.rb"
   rdoc.rdoc_dir = "doc/html"
   rdoc.title    = "Gpgr Documentation"
 end     
@@ -40,7 +40,7 @@ spec = Gem::Specification.new do |spec|
   spec.has_rdoc = true
   spec.extra_rdoc_files = %w{HACKING README.markdown LICENSE COPYING}
   spec.rdoc_options << '--title' << 'Gpgr Documentation' <<
-                       '--main'  << 'README' << '-q'
+                       '--main'  << 'lib/gpgr.rb' << '-q'
   spec.author = "Ryan Stenhouse"
   spec.email = "  ryan@ryanstenhouse.eu"
   spec.rubyforge_project = "gpgr"
