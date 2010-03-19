@@ -83,7 +83,7 @@ not be accepted - I'm happy to assume that it is.
 
 ##Status
 
-Functional if sparsely documented. Gem 0.0.1 has been cut.
+Published as a gem, current version 0.0.4
 
 [1]: http://www.pccl.co.uk
 [2]: http://macgpg.sourceforge.net/
