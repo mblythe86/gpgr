@@ -35,5 +35,14 @@ class TestFileEncryptionFunctionality < Test::Unit::TestCase
     end
     assert !File.exists?(o.file_output)
   end
+  
+  def test_encrypt_will_not_work_if_source_file_doesnt_exist
+    o = Gpgr::Encrypt.file('/tmp/i_just_made_this_up')
+    o.using [ 'nobody@example.com' ]
+    assert_raise Gpgr::Encrypt::InvalidFileException do
+      o.encrypt
+    end
+    assert !File.exists?(o.file_output)
+  end
  
 end

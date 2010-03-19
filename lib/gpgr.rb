@@ -61,6 +61,11 @@ module Gpgr
     #
     class InvalidEmailException < Exception; end
 
+    # Raised if the input or output files for the GPG Encryption are invalid somehow
+    #
+    class InvalidFileException < Exception; end
+    
+
     # Contians the details used to encrypt specified +file+, is what actually does
     # any encryption.
     # 
@@ -99,6 +104,15 @@ module Gpgr
       #   
       def encrypt
         bad_key = @email_addresses.empty?
+        
+        if File.exists?(@file)
+          unless File.readable?(@file)
+            raise InvalidFileException.new("File at #{@file} is not readable.") and return
+          end
+        else
+          raise InvalidFileException.new("File at #{@file} does not exist.") and return
+        end
+        
         @email_addresses.each do |add|
           unless Gpgr::Keys.public_key_installed?(add)
             bad_key = true
