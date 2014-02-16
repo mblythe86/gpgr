@@ -189,6 +189,26 @@ module Gpgr
     end
 
   end
+  
+  module Decrypt
+    
+    def self.file(path)
+      GpgDecryption.new(File.read(path))
+    end
+
+    def self.string(text)
+      GpgDecryption.new(text)
+    end
+    
+    class GpgDecryption
+      attr_accessor :text, :recipients, :signature
+      
+      def initialize(enc_text)
+        command = Gpgr.command + " -d -"
+        @text, @stderr, @status = Open3.capture3(command, :stdin_data=>enc_text)
+      end
+    end
+  end
 
   # Encapsulates all the functionality for dealing with GPG Keys. There isn't much here since
   # key managment isn't really one of the goals of this project. It will, however, allow you
